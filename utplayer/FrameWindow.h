@@ -4,11 +4,13 @@
 #pragma once
 
 #include "resource.h"
+#include "VideoRenderer.h"
 
 class CUtPlayerFrameWindow : public CWindowImpl<CUtPlayerFrameWindow, CWindow, CFrameWinTraits>
 {
 private:
 	IMediaControl *m_pMediaControl;
+	CUtPlayerVideoRenderer *m_pVideoRenderer;
 
 public:
 	CUtPlayerFrameWindow(void);
@@ -36,6 +38,7 @@ private:
 		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen);
 		COMMAND_ID_HANDLER(ID_FILE_EXIT, OnFileExit);
+		COMMAND_RANGE_HANDLER(ID_VIEW_SIZE_50, ID_VIEW_SIZE_200, OnViewSize);
 		COMMAND_ID_HANDLER(ID_HELP_ABOUT, OnHelpAbout);
 	END_MSG_MAP()
 
@@ -46,6 +49,7 @@ private:
 
 	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnViewSize(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 private:

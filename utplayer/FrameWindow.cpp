@@ -8,6 +8,7 @@
 CUtPlayerFrameWindow::CUtPlayerFrameWindow(void)
 {
 	m_pMediaControl = NULL;
+	m_pVideoRenderer = NULL;
 }
 
 CUtPlayerFrameWindow::~CUtPlayerFrameWindow(void)
@@ -74,6 +75,36 @@ LRESULT CUtPlayerFrameWindow::OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCt
 	return SendMessage(WM_CLOSE);
 }
 
+LRESULT CUtPlayerFrameWindow::OnViewSize(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	AM_MEDIA_TYPE mt;
+	VIDEOINFOHEADER *pvih;
+	int width, height;
+
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	m_pVideoRenderer->GetPin(0)->ConnectionMediaType(&mt);
+	pvih = (VIDEOINFOHEADER *)mt.pbFormat;
+	width = pvih->bmiHeader.biWidth;
+	height = pvih->bmiHeader.biHeight;
+	switch (wID)
+	{
+	case ID_VIEW_SIZE_50:
+		width  = (width  + 1) / 2;
+		height = (height + 1) / 2;
+		break;
+	case ID_VIEW_SIZE_200:
+		width  *= 2;
+		height *= 2;
+		break;
+	}
+	ResizeClient(width, height);
+	FreeMediaType(mt);
+
+	return 0;
+}
+
 LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	MessageBox("Ut Alpha Video Player\n"
@@ -89,36 +120,42 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 	IMediaControl *pMediaControl;
 	CUtPlayerVideoRenderer *pVideoRenderer;
 	WCHAR wszFile[MAX_PATH];
+	BOOL bHandled;
 
 	CloseMedia();
 
 	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC, IID_IGraphBuilder, (LPVOID *)&pGraphBuilder);
 
 	pVideoRenderer = new CUtPlayerVideoRenderer(m_hWnd, &hr);
+	pVideoRenderer->AddRef(); // new した時点では参照カウントが 0
 	pGraphBuilder->AddFilter(pVideoRenderer, L"Video Renderer");
-	//pVideoRenderer->Release(); // new した時点で参照カウントが 0 なので Release() してはいけない
 
 	swprintf(wszFile, L"%S", pszFile);
 	hr = pGraphBuilder->RenderFile(wszFile, NULL);
 	if (!SUCCEEDED(hr))
 	{
 		pGraphBuilder->Release();
+		pVideoRenderer->Release();
 		return hr;
 	}
 
 	if (!pVideoRenderer->GetPin(0)->IsConnected())
 	{
 		pGraphBuilder->Release();
+		pVideoRenderer->Release();
 		return E_FAIL;
 	}
 
 	pGraphBuilder->QueryInterface(IID_IMediaControl, (LPVOID *)&pMediaControl);
 	pGraphBuilder->Release();
 
+	m_pMediaControl = pMediaControl;
+	m_pVideoRenderer = pVideoRenderer;
+
+	OnViewSize(0, ID_VIEW_SIZE_100, NULL, bHandled);
+
 	pMediaControl->Run();
 //	pMediaControl->Release(); // フィルタグラフマネージャの最後の参照が Release() されるとグラフ自体が消滅する。
-
-	m_pMediaControl = pMediaControl;
 
 	return S_OK;
 }
@@ -127,10 +164,15 @@ HRESULT CUtPlayerFrameWindow::CloseMedia()
 {
 	if (m_pMediaControl != NULL)
 	{
+		_ASSERT(m_pVideoRenderer != NULL);
 		m_pMediaControl->Stop();
 		m_pMediaControl->Release();
 		m_pMediaControl = NULL;
+		m_pVideoRenderer->Release();
+		m_pVideoRenderer = NULL;
 	}
+	else
+		_ASSERT(m_pVideoRenderer == NULL);
 
 	return S_OK;
 }

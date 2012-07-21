@@ -36,6 +36,15 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
     END
+    POPUP "表示(&V)"
+    BEGIN
+        POPUP "ビデオのサイズ(&Z)"
+        BEGIN
+            MENUITEM "50%(&5)",                     ID_VIEW_SIZE_50
+            MENUITEM "100%(&1)",                    ID_VIEW_SIZE_100
+            MENUITEM "200%(&2)",                    ID_VIEW_SIZE_200
+        END
+    END
     POPUP "ヘルプ(&H)"
     BEGIN
         MENUITEM "バージョン情報(&A)...",              ID_HELP_ABOUT
