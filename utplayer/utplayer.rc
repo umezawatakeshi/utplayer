@@ -32,11 +32,11 @@ IDC_UTPLAYER MENU
 BEGIN
     POPUP "ファイル(&F)"
     BEGIN
-        MENUITEM "アプリケーションの終了(&X)",             IDM_EXIT
+        MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
     END
     POPUP "ヘルプ(&H)"
     BEGIN
-        MENUITEM "バージョン情報(&A)...",              IDM_ABOUT
+        MENUITEM "バージョン情報(&A)...",              ID_HELP_ABOUT
     END
 END
 

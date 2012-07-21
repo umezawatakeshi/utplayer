@@ -45,3 +45,16 @@ LRESULT CUtPlayerFrameWindow::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lPar
 	//bHandled = true;
 	return 0;
 }
+
+LRESULT CUtPlayerFrameWindow::OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	return SendMessage(WM_CLOSE);
+}
+
+LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	MessageBox("Ut Alpha Video Player\n"
+		"Copyright (C) 2012  UMEZAWA Takeshi\n\n"
+		"Licensed under GNU General Public License version 2 or later.");
+	return 0;
+}
