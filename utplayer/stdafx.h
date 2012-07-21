@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <commdlg.h>
 #include <dwmapi.h>
+#include <streams.h>
 
 // C ランタイム ヘッダー ファイル
 #include <stdlib.h>

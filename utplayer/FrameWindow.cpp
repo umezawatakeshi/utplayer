@@ -61,7 +61,8 @@ LRESULT CUtPlayerFrameWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCt
 	if (!GetOpenFileName(&ofn))
 		return 0;
 
-	MessageBox(szFile);
+	OpenMediaFile(szFile);
+
 	return 0;
 }
 
@@ -76,4 +77,28 @@ LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndC
 		"Copyright (C) 2012  UMEZAWA Takeshi\n\n"
 		"Licensed under GNU General Public License version 2 or later.");
 	return 0;
+}
+
+HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
+{
+	HRESULT hr;
+	IGraphBuilder *pGraphBuilder;
+	IMediaControl *pMediaControl;
+	WCHAR wszFile[MAX_PATH];
+
+	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC, IID_IGraphBuilder, (LPVOID *)&pGraphBuilder);
+
+	swprintf(wszFile, L"%S", pszFile);
+	hr = pGraphBuilder->RenderFile(wszFile, NULL);
+	if (!SUCCEEDED(hr))
+	{
+		pGraphBuilder->Release();
+		return hr;
+	}
+
+	pGraphBuilder->QueryInterface(IID_IMediaControl, (LPVOID *)&pMediaControl);
+	pGraphBuilder->Release();
+
+	pMediaControl->Run();
+//	pMediaControl->Release(); // フィルタグラフマネージャの最後の参照が Release() されるとグラフ自体が消滅する。
 }
