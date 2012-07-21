@@ -39,6 +39,7 @@ HRESULT CUtPlayerVideoRenderer::DoRenderSample(IMediaSample *pMediaSample)
 	HDC hdc;
 	HDC hdcBitmap;
 	LONG lActualDataLength;
+	RECT rc;
 
 	pMediaSample->GetPointer(&pBuf);
 	//pMediaSample->GetMediaType(&pmt); // ‚È‚º‚© SEGV ‚·‚é‚±‚Æ‚ª‚ ‚éB
@@ -60,7 +61,10 @@ HRESULT CUtPlayerVideoRenderer::DoRenderSample(IMediaSample *pMediaSample)
 	hdc = GetDC(m_hWnd);
 	hdcBitmap = CreateCompatibleDC(hdc);
 	hbmOld = (HBITMAP)SelectObject(hdcBitmap, hbm);
-	BitBlt(hdc, 0, 0, pvih->bmiHeader.biWidth, pvih->bmiHeader.biHeight, hdcBitmap, 0, 0, SRCCOPY);
+	GetClientRect(m_hWnd, &rc);
+	SetStretchBltMode(hdc, COLORONCOLOR);
+	StretchBlt(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
+		hdcBitmap, 0, 0, pvih->bmiHeader.biWidth, pvih->bmiHeader.biHeight, SRCCOPY);
 	SelectObject(hdcBitmap, hbmOld);
 	DeleteDC(hdcBitmap);
 	ReleaseDC(m_hWnd, hdc);
