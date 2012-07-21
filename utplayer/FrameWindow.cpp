@@ -46,6 +46,25 @@ LRESULT CUtPlayerFrameWindow::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lPar
 	return 0;
 }
 
+LRESULT CUtPlayerFrameWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	OPENFILENAME ofn;
+	char szFile[MAX_PATH] = "";
+
+	memset(&ofn, 0, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = m_hWnd;
+	ofn.lpstrFilter = "AVI Files (*.avi)\0*.avi\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST;
+	if (!GetOpenFileName(&ofn))
+		return 0;
+
+	MessageBox(szFile);
+	return 0;
+}
+
 LRESULT CUtPlayerFrameWindow::OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	return SendMessage(WM_CLOSE);

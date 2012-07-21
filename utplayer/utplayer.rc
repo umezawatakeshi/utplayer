@@ -32,6 +32,8 @@ IDC_UTPLAYER MENU
 BEGIN
     POPUP "ファイル(&F)"
     BEGIN
+        MENUITEM "開く(&O)...",                   ID_FILE_OPEN
+        MENUITEM SEPARATOR
         MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
     END
     POPUP "ヘルプ(&H)"
