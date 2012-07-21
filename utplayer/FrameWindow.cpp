@@ -25,6 +25,9 @@ LRESULT CUtPlayerFrameWindow::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	bb.hRgnBlur = hrgn;
 	DwmEnableBlurBehindWindow(m_hWnd, &bb);
 	DeleteObject(hrgn);
+
+	ResizeClient(320, 240);
+
 	return 0;
 }
 
