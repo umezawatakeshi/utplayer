@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "FrameWindow.h"
+#include "VideoRenderer.h"
 
 CUtPlayerFrameWindow::CUtPlayerFrameWindow(void)
 {
@@ -81,12 +82,17 @@ LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndC
 
 HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 {
-	HRESULT hr;
+	HRESULT hr = S_OK;
 	IGraphBuilder *pGraphBuilder;
 	IMediaControl *pMediaControl;
+	CUtPlayerVideoRenderer *pVideoRenderer;
 	WCHAR wszFile[MAX_PATH];
 
 	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC, IID_IGraphBuilder, (LPVOID *)&pGraphBuilder);
+
+	pVideoRenderer = new CUtPlayerVideoRenderer(m_hWnd, &hr);
+	pGraphBuilder->AddFilter(pVideoRenderer, L"Video Renderer");
+	//pVideoRenderer->Release(); // new した時点で参照カウントが 0 なので Release() してはいけない？
 
 	swprintf(wszFile, L"%S", pszFile);
 	hr = pGraphBuilder->RenderFile(wszFile, NULL);
