@@ -92,7 +92,7 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 
 	pVideoRenderer = new CUtPlayerVideoRenderer(m_hWnd, &hr);
 	pGraphBuilder->AddFilter(pVideoRenderer, L"Video Renderer");
-	//pVideoRenderer->Release(); // new した時点で参照カウントが 0 なので Release() してはいけない？
+	//pVideoRenderer->Release(); // new した時点で参照カウントが 0 なので Release() してはいけない
 
 	swprintf(wszFile, L"%S", pszFile);
 	hr = pGraphBuilder->RenderFile(wszFile, NULL);
