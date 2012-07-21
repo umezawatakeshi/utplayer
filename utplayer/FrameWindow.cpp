@@ -1,5 +1,5 @@
 /* •¶šƒR[ƒh‚Í‚r‚i‚h‚r ‰üsƒR[ƒh‚Í‚b‚q‚k‚e */
-/* $Id: UL00Codec.cpp 890 2012-05-10 10:33:13Z umezawa $ */
+/* $Id$ */
 
 #include "stdafx.h"
 #include "FrameWindow.h"
