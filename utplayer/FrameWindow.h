@@ -3,11 +3,28 @@
 
 #pragma once
 
+#include "resource.h"
+
 class CUtPlayerFrameWindow : public CWindowImpl<CUtPlayerFrameWindow, CWindow, CFrameWinTraits>
 {
 public:
 	CUtPlayerFrameWindow(void);
 	~CUtPlayerFrameWindow(void);
+
+public:
+	static CWndClassInfo &GetWndClassInfo()
+	{
+		static CWndClassInfo wc =
+		{
+			{
+				sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
+				StartWindowProc, 0, 0, NULL, NULL, NULL, NULL,
+				MAKEINTRESOURCE(IDC_UTPLAYER), "UtPlayerFrameWindow", NULL
+			},
+			NULL, NULL, IDC_ARROW, TRUE, 0, ""
+		};
+		return wc;
+	}
 
 private:
 	BEGIN_MSG_MAP(CMyWindow)
