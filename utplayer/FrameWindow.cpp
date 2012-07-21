@@ -7,6 +7,7 @@
 
 CUtPlayerFrameWindow::CUtPlayerFrameWindow(void)
 {
+	m_pMediaControl = NULL;
 }
 
 CUtPlayerFrameWindow::~CUtPlayerFrameWindow(void)
@@ -28,6 +29,7 @@ LRESULT CUtPlayerFrameWindow::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 
 LRESULT CUtPlayerFrameWindow::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	CloseMedia();
 	PostQuitMessage(0);
 	return 0;
 }
@@ -88,6 +90,8 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 	CUtPlayerVideoRenderer *pVideoRenderer;
 	WCHAR wszFile[MAX_PATH];
 
+	CloseMedia();
+
 	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC, IID_IGraphBuilder, (LPVOID *)&pGraphBuilder);
 
 	pVideoRenderer = new CUtPlayerVideoRenderer(m_hWnd, &hr);
@@ -107,6 +111,20 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 
 	pMediaControl->Run();
 //	pMediaControl->Release(); // フィルタグラフマネージャの最後の参照が Release() されるとグラフ自体が消滅する。
+
+	m_pMediaControl = pMediaControl;
+
+	return S_OK;
+}
+
+HRESULT CUtPlayerFrameWindow::CloseMedia()
+{
+	if (m_pMediaControl != NULL)
+	{
+		m_pMediaControl->Stop();
+		m_pMediaControl->Release();
+		m_pMediaControl = NULL;
+	}
 
 	return S_OK;
 }

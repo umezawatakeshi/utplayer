@@ -7,6 +7,9 @@
 
 class CUtPlayerFrameWindow : public CWindowImpl<CUtPlayerFrameWindow, CWindow, CFrameWinTraits>
 {
+private:
+	IMediaControl *m_pMediaControl;
+
 public:
 	CUtPlayerFrameWindow(void);
 	~CUtPlayerFrameWindow(void);
@@ -47,4 +50,5 @@ private:
 
 private:
 	HRESULT OpenMediaFile(LPCSTR pszFile);
+	HRESULT CloseMedia(void);
 };
