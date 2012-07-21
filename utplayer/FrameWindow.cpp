@@ -106,6 +106,12 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 		return hr;
 	}
 
+	if (!pVideoRenderer->GetPin(0)->IsConnected())
+	{
+		pGraphBuilder->Release();
+		return E_FAIL;
+	}
+
 	pGraphBuilder->QueryInterface(IID_IMediaControl, (LPVOID *)&pMediaControl);
 	pGraphBuilder->Release();
 
