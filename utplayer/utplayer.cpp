@@ -13,6 +13,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	CUtPlayerFrameWindow frame;
 	MSG msg;
 
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
 	frame.Create(NULL, CWindow::rcDefault, "Ut Alpha Video Player");
 	frame.ShowWindow(nCmdShow);
 
