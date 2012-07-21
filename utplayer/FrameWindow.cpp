@@ -101,4 +101,6 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 
 	pMediaControl->Run();
 //	pMediaControl->Release(); // フィルタグラフマネージャの最後の参照が Release() されるとグラフ自体が消滅する。
+
+	return S_OK;
 }
