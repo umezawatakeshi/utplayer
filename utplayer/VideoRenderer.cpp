@@ -40,15 +40,6 @@ HRESULT CUtPlayerVideoRenderer::DoRenderSample(IMediaSample *pMediaSample)
 	HDC hdcBitmap;
 	LONG lActualDataLength;
 
-	BITMAPINFO bmi;
-
-	memset(&bmi, 0, sizeof(BITMAPINFO));
-	bmi.bmiHeader.biSize     = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth    = 640;
-	bmi.bmiHeader.biHeight   = 480;
-	bmi.bmiHeader.biPlanes   = 1;
-	bmi.bmiHeader.biBitCount = 32;
-
 	pMediaSample->GetPointer(&pBuf);
 	//pMediaSample->GetMediaType(&pmt); // ‚È‚º‚© SEGV ‚·‚é‚±‚Æ‚ª‚ ‚éB
 	this->m_pInputPin->ConnectionMediaType(&mt);
