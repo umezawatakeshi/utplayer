@@ -17,6 +17,12 @@ public:
 	~CUtPlayerVideoRenderer(void);
 
 public:
+	const void *GetDIBits(void) { return m_pDIB; }
+	LONG GetWidth(void) { return m_nWidth; }
+	LONG GetHeight(void) { return m_nHeight; }
+	const BITMAPINFOHEADER *GetBitmapInfoHeader(void) { return &m_bmih; }
+
+public:
 	virtual HRESULT CompleteConnect(IPin *pReceivePin);
 	virtual HRESULT CheckMediaType(const CMediaType *pmt);
 	virtual HRESULT DoRenderSample(IMediaSample *pMediaSample);

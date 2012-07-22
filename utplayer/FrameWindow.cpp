@@ -40,16 +40,32 @@ LRESULT CUtPlayerFrameWindow::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam,
 
 LRESULT CUtPlayerFrameWindow::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	HDC hdc = (HDC) wParam;
-	HBRUSH hbr;
+	return 0;
+}
 
-	hbr = CreateSolidBrush(0);
-	CRect rect;
-	GetClientRect( &rect );
-	FillRect( hdc, &rect, hbr );
-	DeleteObject(hbr);
+LRESULT CUtPlayerFrameWindow::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	HDC hdc;
+	PAINTSTRUCT ps;
+	RECT rc;
 
-	//bHandled = true;
+	hdc = BeginPaint(&ps);
+	GetClientRect(&rc);
+	if (m_pVideoRenderer != NULL)
+	{
+		SetStretchBltMode(hdc, COLORONCOLOR);
+		StretchDIBits(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
+			0, 0, m_pVideoRenderer->GetWidth(), m_pVideoRenderer->GetHeight(),
+			m_pVideoRenderer->GetDIBits(), (BITMAPINFO *)m_pVideoRenderer->GetBitmapInfoHeader(),
+			DIB_RGB_COLORS, SRCCOPY);
+	}
+	else
+	{
+		// 白いブラシならアルファ値に関わらずちゃんと白くなる。（乗算済みアルファなので）
+		FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+	}
+	EndPaint(&ps);
+
 	return 0;
 }
 
