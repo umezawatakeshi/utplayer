@@ -2,6 +2,7 @@
 /* $Id$ */
 
 #include "stdafx.h"
+#include "utplayer.h"
 #include "FrameWindow.h"
 #include "VideoRenderer.h"
 
@@ -134,9 +135,15 @@ LRESULT CUtPlayerFrameWindow::OnViewSize(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	MessageBox("Ut Alpha Video Player\n"
+	char buf[256];
+
+	sprintf(buf,
+		"Ut Alpha Video Player, version %s\n"
 		"Copyright (C) 2012  UMEZAWA Takeshi\n\n"
-		"Licensed under GNU General Public License version 2 or later.");
+		"Licensed under GNU General Public License version 2 or later.",
+		UTPLAYER_VERSION_STR);
+	MessageBox(buf);
+
 	return 0;
 }
 

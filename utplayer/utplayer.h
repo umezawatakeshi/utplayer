@@ -3,4 +3,4 @@
 
 #pragma once
 
-#include "resource.h"
+#define UTPLAYER_VERSION_STR "1.0.0"
