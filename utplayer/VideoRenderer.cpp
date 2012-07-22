@@ -11,10 +11,39 @@ DEFINE_GUID(CLSID_UtPlayerVideoRenderer, 0xc7016167, 0x796f, 0x4459, 0x87, 0x6e,
 
 CUtPlayerVideoRenderer::CUtPlayerVideoRenderer(HWND hWnd, HRESULT *phr) : CBaseRenderer(CLSID_UtPlayerVideoRenderer, "CUtPlayerVideoRenderer", NULL, phr), m_hWnd(hWnd)
 {
+	m_pDIB = NULL;
 }
 
 CUtPlayerVideoRenderer::~CUtPlayerVideoRenderer(void)
 {
+	if (m_pDIB != NULL)
+		free(m_pDIB);
+}
+
+HRESULT CUtPlayerVideoRenderer::CompleteConnect(IPin *pReceivePin)
+{
+	HRESULT hr;
+	AM_MEDIA_TYPE mt;
+	VIDEOINFOHEADER *pvih;
+
+	hr = CBaseRenderer::CompleteConnect(pReceivePin);
+	if (FAILED(hr))
+		return hr;
+
+	free(m_pDIB);
+	m_pDIB = NULL;
+
+	this->m_pInputPin->ConnectionMediaType(&mt);
+	pvih = (VIDEOINFOHEADER *)mt.pbFormat;
+	m_nWidth = pvih->bmiHeader.biWidth;
+	m_nHeight = pvih->bmiHeader.biHeight;
+	m_bmih = pvih->bmiHeader;
+	FreeMediaType(mt);
+
+	m_pDIB = (BYTE *)malloc(m_nWidth * m_nHeight * 4);
+	memset(m_pDIB, 0, m_nWidth * m_nHeight * 4);
+
+	return S_OK;
 }
 
 HRESULT CUtPlayerVideoRenderer::CheckMediaType(const CMediaType *pmt)
@@ -31,47 +60,27 @@ HRESULT CUtPlayerVideoRenderer::CheckMediaType(const CMediaType *pmt)
 HRESULT CUtPlayerVideoRenderer::DoRenderSample(IMediaSample *pMediaSample)
 {
 	BYTE *pBuf;
-	BYTE *pDIB;
-	AM_MEDIA_TYPE mt;
-	VIDEOINFOHEADER *pvih;
-	HBITMAP hbm;
-	HBITMAP hbmOld;
 	HDC hdc;
-	HDC hdcBitmap;
 	LONG lActualDataLength;
 	RECT rc;
 
 	pMediaSample->GetPointer(&pBuf);
-	//pMediaSample->GetMediaType(&pmt); // ‚È‚º‚© SEGV ‚·‚é‚±‚Æ‚ª‚ ‚éB
-	this->m_pInputPin->ConnectionMediaType(&mt);
-	pvih = (VIDEOINFOHEADER *)mt.pbFormat;
-	hdc = GetDC(m_hWnd);
-	hbm = CreateDIBSection(hdc, (BITMAPINFO *)&pvih->bmiHeader, DIB_RGB_COLORS, (void **)&pDIB, NULL, 0);
-	ReleaseDC(m_hWnd, hdc);
 	lActualDataLength = pMediaSample->GetActualDataLength();
 	for (long i = 0; i < lActualDataLength; i += 4)
 	{
-		pDIB[i + 0] = pBuf[i + 0] * pBuf[i + 3] / 255;
-		pDIB[i + 1] = pBuf[i + 1] * pBuf[i + 3] / 255;
-		pDIB[i + 2] = pBuf[i + 2] * pBuf[i + 3] / 255;
-		pDIB[i + 3] = pBuf[i + 3];
+		m_pDIB[i + 0] = pBuf[i + 0] * pBuf[i + 3] / 255;
+		m_pDIB[i + 1] = pBuf[i + 1] * pBuf[i + 3] / 255;
+		m_pDIB[i + 2] = pBuf[i + 2] * pBuf[i + 3] / 255;
+		m_pDIB[i + 3] = pBuf[i + 3];
 	}
 
 	//InvalidateRect(m_hWnd, NULL, FALSE);
 	hdc = GetDC(m_hWnd);
-	hdcBitmap = CreateCompatibleDC(hdc);
-	hbmOld = (HBITMAP)SelectObject(hdcBitmap, hbm);
 	GetClientRect(m_hWnd, &rc);
 	SetStretchBltMode(hdc, COLORONCOLOR);
-	StretchBlt(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
-		hdcBitmap, 0, 0, pvih->bmiHeader.biWidth, pvih->bmiHeader.biHeight, SRCCOPY);
-	SelectObject(hdcBitmap, hbmOld);
-	DeleteDC(hdcBitmap);
+	StretchDIBits(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
+		0, 0, m_nWidth, m_nHeight, m_pDIB, (BITMAPINFO *)&m_bmih, DIB_RGB_COLORS, SRCCOPY);
 	ReleaseDC(m_hWnd, hdc);
-
-	DeleteObject(hbm);
-
-	FreeMediaType(mt);
 
 	_RPT0(_CRT_WARN, "hoge\n");
 	return S_OK;
