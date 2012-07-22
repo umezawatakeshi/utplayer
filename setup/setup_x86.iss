@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Ut Alpha Video Player
-AppId=utplayer
+AppId=utplayer-x86
 AppVersion=1.0.0
 AppCopyright=Copyright (c) 2012 UMEZAWA Takeshi
 AppPublisher=UMEZAWA Takeshi
