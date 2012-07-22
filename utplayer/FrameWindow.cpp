@@ -89,6 +89,14 @@ LRESULT CUtPlayerFrameWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCt
 	return 0;
 }
 
+LRESULT CUtPlayerFrameWindow::OnFileClose(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	CloseMedia();
+	Invalidate();
+
+	return 0;
+}
+
 LRESULT CUtPlayerFrameWindow::OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	return SendMessage(WM_CLOSE);

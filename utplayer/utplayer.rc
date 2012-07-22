@@ -33,6 +33,7 @@ BEGIN
     POPUP "ファイル(&F)"
     BEGIN
         MENUITEM "開く(&O)...",                   ID_FILE_OPEN
+        MENUITEM "閉じる(&C)",                     ID_FILE_CLOSE
         MENUITEM SEPARATOR
         MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
     END
