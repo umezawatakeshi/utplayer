@@ -27,6 +27,8 @@ LRESULT CUtPlayerFrameWindow::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	DwmEnableBlurBehindWindow(m_hWnd, &bb);
 	DeleteObject(hrgn);
 
+	DragAcceptFiles();
+
 	ResizeClient(320, 240);
 
 	return 0;
@@ -66,6 +68,24 @@ LRESULT CUtPlayerFrameWindow::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 		FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
 	}
 	EndPaint(&ps);
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	HDROP hDrop = (HDROP)wParam;
+	char szFile[MAX_PATH];
+
+	if (!DragQueryFile(hDrop, 0, szFile, sizeof(szFile)))
+	{
+		DragFinish(hDrop);
+		return 0;
+	}
+
+	OpenMediaFile(szFile);
+
+	DragFinish(hDrop);
 
 	return 0;
 }

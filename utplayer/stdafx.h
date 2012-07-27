@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <commdlg.h>
 #include <dwmapi.h>
+#include <shellapi.h>
 #include <streams.h>
 
 // C ランタイム ヘッダー ファイル
@@ -40,6 +41,7 @@
 #include <tchar.h>
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// 一部の CString コンストラクタは明示的です。
+#define _INC_SHELLAPI
 
 #include <atlbase.h>
 #include <atlstr.h>
