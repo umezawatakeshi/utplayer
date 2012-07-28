@@ -82,6 +82,5 @@ HRESULT CUtPlayerVideoRenderer::DoRenderSample(IMediaSample *pMediaSample)
 		0, 0, m_nWidth, m_nHeight, m_pDIB, (BITMAPINFO *)&m_bmih, DIB_RGB_COLORS, SRCCOPY);
 	ReleaseDC(m_hWnd, hdc);
 
-	_RPT0(_CRT_WARN, "hoge\n");
 	return S_OK;
 }
