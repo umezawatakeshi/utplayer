@@ -57,8 +57,10 @@ LRESULT CUtPlayerFrameWindow::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 	}
 	else
 	{
-		// 白いブラシならアルファ値に関わらずちゃんと白くなる。（乗算済みアルファなので）
-		FillRect(hdc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+		HBRUSH hBrush;
+		hBrush = CreateSolidBrush(0x00000000); // GetStockObject(BLACK_BRUSH) だとアルファ値が 0 であることが保証されない
+		FillRect(hdc, &rc, hBrush);
+		DeleteObject(hBrush);
 	}
 	EndPaint(&ps);
 
