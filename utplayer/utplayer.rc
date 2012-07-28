@@ -39,6 +39,13 @@ BEGIN
     END
     POPUP "表示(&V)"
     BEGIN
+        POPUP "背景(&B)"
+        BEGIN
+            MENUITEM "透明(&T)",                      ID_VIEW_BACKGROUND_TRANSPARENT
+            MENUITEM "ガラス(&L)",                     ID_VIEW_BACKGROUND_GLASS
+            MENUITEM SEPARATOR
+            MENUITEM "黒(&K)",                       ID_VIEW_BACKGROUND_BLACK
+        END
         POPUP "ビデオのサイズ(&Z)"
         BEGIN
             MENUITEM "50%(&5)",                     ID_VIEW_SIZE_50
@@ -133,6 +140,13 @@ BEGIN
     END
     POPUP "&View"
     BEGIN
+        POPUP "&Background"
+        BEGIN
+            MENUITEM "&Transparent",                ID_VIEW_BACKGROUND_TRANSPARENT
+            MENUITEM "G&lass",                      ID_VIEW_BACKGROUND_GLASS
+            MENUITEM SEPARATOR
+            MENUITEM "Blac&k",                      ID_VIEW_BACKGROUND_BLACK
+        END
         POPUP "Si&ze of video"
         BEGIN
             MENUITEM "&50%",                        ID_VIEW_SIZE_50

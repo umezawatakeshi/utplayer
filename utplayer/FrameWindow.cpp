@@ -18,16 +18,9 @@ CUtPlayerFrameWindow::~CUtPlayerFrameWindow(void)
 
 LRESULT CUtPlayerFrameWindow::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	DWM_BLURBEHIND bb;
-	HRGN hrgn = CreateRectRgn(-1, -1, 0, 0); // クライアント領域全体が透明
-
-	bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
-	bb.fEnable = TRUE;
-	bb.hRgnBlur = hrgn;
-	DwmEnableBlurBehindWindow(m_hWnd, &bb);
-	DeleteObject(hrgn);
-
 	DragAcceptFiles();
+
+	OnViewBackground(0, ID_VIEW_BACKGROUND_TRANSPARENT, NULL, bHandled);
 
 	ResizeClient(320, 240);
 
@@ -149,6 +142,27 @@ LRESULT CUtPlayerFrameWindow::OnViewSize(WORD wNotifyCode, WORD wID, HWND hWndCt
 	}
 	ResizeClient(width, height);
 	FreeMediaType(mt);
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnViewBackground(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	DWM_BLURBEHIND bb;
+	HRGN hrgn;
+
+	if (wID == ID_VIEW_BACKGROUND_TRANSPARENT)
+		hrgn = CreateRectRgn(-1, -1, 0, 0);
+	else
+		hrgn = NULL;
+	bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+	bb.fEnable = (wID != ID_VIEW_BACKGROUND_BLACK);
+	bb.hRgnBlur = hrgn;
+	DwmEnableBlurBehindWindow(m_hWnd, &bb);
+	if (hrgn != NULL)
+		DeleteObject(hrgn);
+
+	CheckMenuRadioItem(GetMenu(), ID_VIEW_BACKGROUND_FIRST, ID_VIEW_BACKGROUND_LAST, wID, MF_BYCOMMAND);
 
 	return 0;
 }

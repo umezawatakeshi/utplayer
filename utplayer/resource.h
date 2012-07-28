@@ -15,6 +15,18 @@
 #define ID_VIEW_SIZE_100                32779
 #define ID_VIEW_SIZE_200                32781
 #define ID_FILE_CLOSE                   32783
+#define ID_VIEW_BACKGROUND_FIRST        32791
+#define ID_VIEW_BACKGROUND_TRANSPARENT  32791
+#define ID_VIEW_BACKGROUND_GLASS        32792
+#define ID_VIEW_BACKGROUND_BLACK        32793
+#define ID_VIEW_BACKGROUND_LAST         32793
+#define ID_VIEW_BACKGROUND_BLUE         32794
+#define ID_VIEW_BACKGROUND_GREEN        32795
+#define ID_VIEW_BACKGROUND_CYAN         32796
+#define ID_VIEW_BACKGROUND_RED          32797
+#define ID_VIEW_BACKGROUND_MAGENTA      32798
+#define ID_VIEW_BACKGROUND_YELLOW       32799
+#define ID_VIEW_BACKGROUND_WHITE        32800
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -23,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        129
-#define _APS_NEXT_COMMAND_VALUE         32784
+#define _APS_NEXT_COMMAND_VALUE         32804
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
