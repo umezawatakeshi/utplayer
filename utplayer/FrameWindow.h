@@ -43,6 +43,9 @@ private:
 		COMMAND_ID_HANDLER(ID_FILE_EXIT, OnFileExit);
 		COMMAND_RANGE_HANDLER(ID_VIEW_SIZE_50, ID_VIEW_SIZE_200, OnViewSize);
 		COMMAND_RANGE_HANDLER(ID_VIEW_BACKGROUND_FIRST, ID_VIEW_BACKGROUND_LAST, OnViewBackground);
+		COMMAND_ID_HANDLER(ID_PLAY_PLAYPAUSE, OnPlayPlayPause);
+		COMMAND_ID_HANDLER(ID_PLAY_STOP, OnPlayStop);
+		COMMAND_RANGE_HANDLER(ID_PLAY_PLAYSPEED_50, ID_PLAY_PLAYSPEED_200, OnPlayPlaySpeed);
 		COMMAND_ID_HANDLER(ID_HELP_ABOUT, OnHelpAbout);
 	END_MSG_MAP()
 
@@ -58,6 +61,9 @@ private:
 	LRESULT OnFileExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnViewSize(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnViewBackground(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPlayPlayPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPlayStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPlayPlaySpeed(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 private:

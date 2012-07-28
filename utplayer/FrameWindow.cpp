@@ -167,6 +167,68 @@ LRESULT CUtPlayerFrameWindow::OnViewBackground(WORD wNotifyCode, WORD wID, HWND 
 	return 0;
 }
 
+LRESULT CUtPlayerFrameWindow::OnPlayPlayPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	OAFilterState fs;
+
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	if (FAILED(m_pMediaControl->GetState(500, &fs)))
+		return 0;
+
+	switch (fs)
+	{
+	case State_Stopped:
+	case State_Paused:
+		m_pMediaControl->Run();
+		break;
+	case State_Running:
+		m_pMediaControl->Pause();
+	}
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnPlayStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	m_pMediaControl->Stop();
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnPlayPlaySpeed(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	double rate = 1.0;
+	IMediaSeeking *pMediaSeeking;
+
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	switch (wID)
+	{
+	case ID_PLAY_PLAYSPEED_50:
+		rate = 0.5;
+		break;
+	case ID_PLAY_PLAYSPEED_100:
+		rate = 1.0;
+		break;
+	case ID_PLAY_PLAYSPEED_200:
+		rate = 2.0;
+		break;
+	}
+
+	if (FAILED(m_pMediaControl->QueryInterface(IID_IMediaSeeking, (void **)&pMediaSeeking)))
+		return 0;
+	pMediaSeeking->SetRate(rate);
+	pMediaSeeking->Release();
+
+	return 0;
+}
+
 LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	char buf[256];
