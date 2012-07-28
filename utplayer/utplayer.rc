@@ -158,7 +158,7 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "Blac&k",                      ID_VIEW_BACKGROUND_BLACK
         END
-        POPUP "Si&ze of video"
+        POPUP "Video Si&ze"
         BEGIN
             MENUITEM "&50%",                        ID_VIEW_SIZE_50
             MENUITEM "&100%",                       ID_VIEW_SIZE_100
