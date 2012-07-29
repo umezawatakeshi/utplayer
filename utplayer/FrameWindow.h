@@ -10,6 +10,7 @@ class CUtPlayerFrameWindow : public CWindowImpl<CUtPlayerFrameWindow, CWindow, C
 {
 private:
 	IMediaControl *m_pMediaControl;
+	IMediaSeeking *m_pMediaSeeking;
 	CUtPlayerVideoRenderer *m_pVideoRenderer;
 
 public:
@@ -46,6 +47,8 @@ private:
 		COMMAND_ID_HANDLER(ID_PLAY_PLAYPAUSE, OnPlayPlayPause);
 		COMMAND_ID_HANDLER(ID_PLAY_STOP, OnPlayStop);
 		COMMAND_ID_HANDLER(ID_PLAY_REWIND, OnPlayRewind);
+		COMMAND_ID_HANDLER(ID_PLAY_STEP_BACKWARD, OnPlayStepBackward);
+		COMMAND_ID_HANDLER(ID_PLAY_STEP_FORWARD, OnPlayStepForward);
 		COMMAND_RANGE_HANDLER(ID_PLAY_PLAYSPEED_50, ID_PLAY_PLAYSPEED_200, OnPlayPlaySpeed);
 		COMMAND_ID_HANDLER(ID_HELP_ABOUT, OnHelpAbout);
 	END_MSG_MAP()
@@ -65,6 +68,8 @@ private:
 	LRESULT OnPlayPlayPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPlayStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPlayRewind(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPlayStepBackward(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPlayStepForward(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPlayPlaySpeed(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 

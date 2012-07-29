@@ -58,6 +58,9 @@ BEGIN
         MENUITEM "çƒê∂/àÍéûí‚é~(&P)",                 ID_PLAY_PLAYPAUSE
         MENUITEM "í‚é~(&S)",                      ID_PLAY_STOP
         MENUITEM "ä™Ç´ñﬂÇµ(&R)",                    ID_PLAY_REWIND
+        MENUITEM "è≠ÇµñﬂÇÈ(&B)",                    ID_PLAY_STEP_BACKWARD
+        MENUITEM "è≠ÇµêiÇﬁ(&F)",                    ID_PLAY_STEP_FORWARD
+        MENUITEM SEPARATOR
         POPUP "çƒê∂ë¨ìx(&Y)"
         BEGIN
             MENUITEM "50%(&5)",                     ID_PLAY_PLAYSPEED_50
@@ -171,6 +174,9 @@ BEGIN
         MENUITEM "&Play/Pause",                 ID_PLAY_PLAYPAUSE
         MENUITEM "&Stop",                       ID_PLAY_STOP
         MENUITEM "&Rewind",                     ID_PLAY_REWIND
+        MENUITEM "Step &Backward",              ID_PLAY_STEP_BACKWARD
+        MENUITEM "Step &Forward",               ID_PLAY_STEP_FORWARD
+        MENUITEM SEPARATOR
         POPUP "Pla&y Speed"
         BEGIN
             MENUITEM "&50%",                        ID_PLAY_PLAYSPEED_50

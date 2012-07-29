@@ -9,6 +9,7 @@
 CUtPlayerFrameWindow::CUtPlayerFrameWindow(void)
 {
 	m_pMediaControl = NULL;
+	m_pMediaSeeking = NULL;
 	m_pVideoRenderer = NULL;
 }
 
@@ -205,16 +206,40 @@ LRESULT CUtPlayerFrameWindow::OnPlayStop(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT CUtPlayerFrameWindow::OnPlayRewind(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	IMediaSeeking *pMediaSeeking;
 	LONGLONG llPos = 0;
 
 	if (m_pMediaControl == NULL)
 		return 0;
 
-	if (FAILED(m_pMediaControl->QueryInterface(IID_IMediaSeeking, (void **)&pMediaSeeking)))
+	m_pMediaSeeking->SetPositions(&llPos, AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnPlayStepBackward(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	LONGLONG llPos;
+
+	if (m_pMediaControl == NULL)
 		return 0;
-	pMediaSeeking->SetPositions(&llPos, AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
-	pMediaSeeking->Release();
+
+	//m_pMediaSeeking->SetPositions(&llPos, AM_SEEKING_RelativePositioning, NULL, AM_SEEKING_NoPositioning); // AM_SEEKING_RelativePositioning で過去にシークすることはできない…？
+	if (FAILED(m_pMediaSeeking->GetCurrentPosition(&llPos)))
+		return 0;
+	llPos = max(llPos - 50000000LL, 0LL);
+	m_pMediaSeeking->SetPositions(&llPos, AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnPlayStepForward(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	LONGLONG llPos = +50000000LL;
+
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	m_pMediaSeeking->SetPositions(&llPos, AM_SEEKING_RelativePositioning, NULL, AM_SEEKING_NoPositioning);
 
 	return 0;
 }
@@ -222,7 +247,6 @@ LRESULT CUtPlayerFrameWindow::OnPlayRewind(WORD wNotifyCode, WORD wID, HWND hWnd
 LRESULT CUtPlayerFrameWindow::OnPlayPlaySpeed(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	double rate = 1.0;
-	IMediaSeeking *pMediaSeeking;
 
 	if (m_pMediaControl == NULL)
 		return 0;
@@ -240,10 +264,7 @@ LRESULT CUtPlayerFrameWindow::OnPlayPlaySpeed(WORD wNotifyCode, WORD wID, HWND h
 		break;
 	}
 
-	if (FAILED(m_pMediaControl->QueryInterface(IID_IMediaSeeking, (void **)&pMediaSeeking)))
-		return 0;
-	pMediaSeeking->SetRate(rate);
-	pMediaSeeking->Release();
+	m_pMediaSeeking->SetRate(rate);
 
 	return 0;
 }
@@ -266,7 +287,6 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 {
 	HRESULT hr = S_OK;
 	IGraphBuilder *pGraphBuilder;
-	IMediaControl *pMediaControl;
 	CUtPlayerVideoRenderer *pVideoRenderer;
 	WCHAR wszFile[MAX_PATH];
 	BOOL bHandled;
@@ -295,16 +315,15 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 		return E_FAIL;
 	}
 
-	pGraphBuilder->QueryInterface(IID_IMediaControl, (LPVOID *)&pMediaControl);
+	pGraphBuilder->QueryInterface(IID_IMediaControl, (LPVOID *)&m_pMediaControl);
+	pGraphBuilder->QueryInterface(IID_IMediaSeeking, (LPVOID *)&m_pMediaSeeking);
 	pGraphBuilder->Release();
 
-	m_pMediaControl = pMediaControl;
 	m_pVideoRenderer = pVideoRenderer;
 
 	OnViewSize(0, ID_VIEW_SIZE_100, NULL, bHandled);
 
-	pMediaControl->Run();
-//	pMediaControl->Release(); // フィルタグラフマネージャの最後の参照が Release() されるとグラフ自体が消滅する。
+	m_pMediaControl->Run();
 
 	return S_OK;
 }
@@ -313,15 +332,21 @@ HRESULT CUtPlayerFrameWindow::CloseMedia()
 {
 	if (m_pMediaControl != NULL)
 	{
+		_ASSERT(m_pMediaSeeking != NULL);
 		_ASSERT(m_pVideoRenderer != NULL);
 		m_pMediaControl->Stop();
 		m_pMediaControl->Release();
 		m_pMediaControl = NULL;
+		m_pMediaSeeking->Release();
+		m_pMediaSeeking = NULL;
 		m_pVideoRenderer->Release();
 		m_pVideoRenderer = NULL;
 	}
 	else
+	{
+		_ASSERT(m_pMediaSeeking == NULL);
 		_ASSERT(m_pVideoRenderer == NULL);
+	}
 
 	return S_OK;
 }
