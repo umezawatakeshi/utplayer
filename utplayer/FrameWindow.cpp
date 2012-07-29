@@ -187,6 +187,7 @@ LRESULT CUtPlayerFrameWindow::OnPlayPlayPause(WORD wNotifyCode, WORD wID, HWND h
 		break;
 	case State_Running:
 		m_pMediaControl->Pause();
+		break;
 	}
 
 	return 0;
@@ -198,6 +199,22 @@ LRESULT CUtPlayerFrameWindow::OnPlayStop(WORD wNotifyCode, WORD wID, HWND hWndCt
 		return 0;
 
 	m_pMediaControl->Stop();
+
+	return 0;
+}
+
+LRESULT CUtPlayerFrameWindow::OnPlayRewind(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	IMediaSeeking *pMediaSeeking;
+	LONGLONG llPos = 0;
+
+	if (m_pMediaControl == NULL)
+		return 0;
+
+	if (FAILED(m_pMediaControl->QueryInterface(IID_IMediaSeeking, (void **)&pMediaSeeking)))
+		return 0;
+	pMediaSeeking->SetPositions(&llPos, AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
+	pMediaSeeking->Release();
 
 	return 0;
 }

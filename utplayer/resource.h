@@ -32,6 +32,7 @@
 #define ID_PLAY_PLAYSPEED_50            32814
 #define ID_PLAY_PLAYSPEED_100           32815
 #define ID_PLAY_PLAYSPEED_200           32816
+#define ID_PLAY_REWIND                  32826
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -40,7 +41,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        129
-#define _APS_NEXT_COMMAND_VALUE         32825
+#define _APS_NEXT_COMMAND_VALUE         32828
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

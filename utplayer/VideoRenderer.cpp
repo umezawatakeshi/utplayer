@@ -46,6 +46,11 @@ HRESULT CUtPlayerVideoRenderer::CompleteConnect(IPin *pReceivePin)
 	return S_OK;
 }
 
+void CUtPlayerVideoRenderer::OnReceiveFirstSample(IMediaSample *pMediaSample)
+{
+	DoRenderSample(pMediaSample);
+}
+
 HRESULT CUtPlayerVideoRenderer::CheckMediaType(const CMediaType *pmt)
 {
 	if (!IsEqualGUID(*pmt->Type(), MEDIATYPE_Video) || !IsEqualGUID(*pmt->FormatType(), FORMAT_VideoInfo))

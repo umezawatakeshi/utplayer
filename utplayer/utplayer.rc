@@ -57,6 +57,7 @@ BEGIN
     BEGIN
         MENUITEM "çƒê∂/àÍéûí‚é~(&P)",                 ID_PLAY_PLAYPAUSE
         MENUITEM "í‚é~(&S)",                      ID_PLAY_STOP
+        MENUITEM "ä™Ç´ñﬂÇµ(&R)",                    ID_PLAY_REWIND
         POPUP "çƒê∂ë¨ìx(&Y)"
         BEGIN
             MENUITEM "50%(&5)",                     ID_PLAY_PLAYSPEED_50
@@ -169,6 +170,7 @@ BEGIN
     BEGIN
         MENUITEM "&Play/Pause",                 ID_PLAY_PLAYPAUSE
         MENUITEM "&Stop",                       ID_PLAY_STOP
+        MENUITEM "&Rewind",                     ID_PLAY_REWIND
         POPUP "Pla&y Speed"
         BEGIN
             MENUITEM "&50%",                        ID_PLAY_PLAYSPEED_50

@@ -24,6 +24,7 @@ public:
 
 public:
 	virtual HRESULT CompleteConnect(IPin *pReceivePin);
+	virtual void OnReceiveFirstSample(IMediaSample *pMediaSample);
 	virtual HRESULT CheckMediaType(const CMediaType *pmt);
 	virtual HRESULT DoRenderSample(IMediaSample *pMediaSample);
 };
