@@ -30,10 +30,17 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 IDC_UTPLAYER ACCELERATORS 
 BEGIN
+    "W",            ID_FILE_CLOSE,          VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_PLAY_PLAYPAUSE,      VIRTKEY, CONTROL, NOINVERT
     VK_SPACE,       ID_PLAY_PLAYPAUSE,      VIRTKEY, NOINVERT
-    VK_LEFT,        ID_PLAY_STEP_BACKWARD,  VIRTKEY, NOINVERT
-    VK_RIGHT,       ID_PLAY_STEP_FORWARD,   VIRTKEY, NOINVERT
     VK_HOME,        ID_PLAY_REWIND,         VIRTKEY, NOINVERT
+    VK_LEFT,        ID_PLAY_STEP_BACKWARD,  VIRTKEY, SHIFT, NOINVERT
+    VK_RIGHT,       ID_PLAY_STEP_FORWARD,   VIRTKEY, SHIFT, NOINVERT
+    "S",            ID_PLAY_STOP,           VIRTKEY, CONTROL, NOINVERT
+    "2",            ID_VIEW_SIZE_100,       VIRTKEY, ALT, NOINVERT
+    "3",            ID_VIEW_SIZE_200,       VIRTKEY, ALT, NOINVERT
+    "1",            ID_VIEW_SIZE_50,        VIRTKEY, ALT, NOINVERT
 END
 
 #endif    // ニュートラル resources
@@ -58,8 +65,8 @@ IDC_UTPLAYER MENU
 BEGIN
     POPUP "ファイル(&F)"
     BEGIN
-        MENUITEM "開く(&O)...",                   ID_FILE_OPEN
-        MENUITEM "閉じる(&C)",                     ID_FILE_CLOSE
+        MENUITEM "開く(&O)...\tCtrl+O",           ID_FILE_OPEN
+        MENUITEM "閉じる(&C)\tCtrl+W",             ID_FILE_CLOSE
         MENUITEM SEPARATOR
         MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
     END
@@ -74,18 +81,18 @@ BEGIN
         END
         POPUP "ビデオのサイズ(&Z)"
         BEGIN
-            MENUITEM "50%(&5)",                     ID_VIEW_SIZE_50
-            MENUITEM "100%(&1)",                    ID_VIEW_SIZE_100
-            MENUITEM "200%(&2)",                    ID_VIEW_SIZE_200
+            MENUITEM "50%(&5)\tAlt+1",              ID_VIEW_SIZE_50
+            MENUITEM "100%(&1)\tAlt+2",             ID_VIEW_SIZE_100
+            MENUITEM "200%(&2)\tAlt+3",             ID_VIEW_SIZE_200
         END
     END
     POPUP "再生(&P)"
     BEGIN
-        MENUITEM "再生/一時停止(&P)",                 ID_PLAY_PLAYPAUSE
-        MENUITEM "停止(&S)",                      ID_PLAY_STOP
-        MENUITEM "巻き戻し(&R)",                    ID_PLAY_REWIND
-        MENUITEM "少し戻る(&B)",                    ID_PLAY_STEP_BACKWARD
-        MENUITEM "少し進む(&F)",                    ID_PLAY_STEP_FORWARD
+        MENUITEM "再生/一時停止(&P)\tSpace, Ctrl+P",  ID_PLAY_PLAYPAUSE
+        MENUITEM "停止(&S)\tCtrl+S",              ID_PLAY_STOP
+        MENUITEM "巻き戻し(&R)\tHome",              ID_PLAY_REWIND
+        MENUITEM "少し戻る(&B)\tShift+左",           ID_PLAY_STEP_BACKWARD
+        MENUITEM "少し進む(&F)\tShift+右",           ID_PLAY_STEP_FORWARD
         MENUITEM SEPARATOR
         POPUP "再生速度(&Y)"
         BEGIN
@@ -162,8 +169,8 @@ IDC_UTPLAYER MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Open...",                    ID_FILE_OPEN
-        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close\tCtrl+W",              ID_FILE_CLOSE
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_FILE_EXIT
     END
@@ -178,18 +185,18 @@ BEGIN
         END
         POPUP "Video Si&ze"
         BEGIN
-            MENUITEM "&50%",                        ID_VIEW_SIZE_50
-            MENUITEM "&100%",                       ID_VIEW_SIZE_100
-            MENUITEM "&200%",                       ID_VIEW_SIZE_200
+            MENUITEM "&50%\tAlt+1",                 ID_VIEW_SIZE_50
+            MENUITEM "&100%\tAlt+2",                ID_VIEW_SIZE_100
+            MENUITEM "&200%\tAlt+3",                ID_VIEW_SIZE_200
         END
     END
     POPUP "&Play"
     BEGIN
-        MENUITEM "&Play/Pause",                 ID_PLAY_PLAYPAUSE
-        MENUITEM "&Stop",                       ID_PLAY_STOP
-        MENUITEM "&Rewind",                     ID_PLAY_REWIND
-        MENUITEM "Step &Backward",              ID_PLAY_STEP_BACKWARD
-        MENUITEM "Step &Forward",               ID_PLAY_STEP_FORWARD
+        MENUITEM "&Play/Pause\tSpace, Ctrl+P",  ID_PLAY_PLAYPAUSE
+        MENUITEM "&Stop\tCtrl+S",               ID_PLAY_STOP
+        MENUITEM "&Rewind\tHome",               ID_PLAY_REWIND
+        MENUITEM "Step &Backward\tShift+Left",  ID_PLAY_STEP_BACKWARD
+        MENUITEM "Step &Forward\tShift+Right",  ID_PLAY_STEP_FORWARD
         MENUITEM SEPARATOR
         POPUP "Pla&y Speed"
         BEGIN
