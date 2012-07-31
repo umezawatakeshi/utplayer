@@ -273,7 +273,7 @@ LRESULT CUtPlayerFrameWindow::OnHelpAbout(WORD wNotifyCode, WORD wID, HWND hWndC
 {
 	char buf[256];
 
-	sprintf(buf,
+	wsprintf(buf,
 		"Ut Alpha Video Player, version %s\n"
 		"Copyright (C) 2012  UMEZAWA Takeshi\n\n"
 		"Licensed under GNU General Public License version 2 or later.",
@@ -299,7 +299,7 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 	pVideoRenderer->AddRef(); // new した時点では参照カウントが 0
 	pGraphBuilder->AddFilter(pVideoRenderer, L"Video Renderer");
 
-	swprintf(wszFile, L"%S", pszFile);
+	wsprintfW(wszFile, L"%S", pszFile);
 	hr = pGraphBuilder->RenderFile(wszFile, NULL);
 	if (!SUCCEEDED(hr))
 	{
