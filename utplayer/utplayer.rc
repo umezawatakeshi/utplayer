@@ -68,7 +68,7 @@ BEGIN
         MENUITEM "開く(&O)...\tCtrl+O",           ID_FILE_OPEN
         MENUITEM "閉じる(&C)\tCtrl+W",             ID_FILE_CLOSE
         MENUITEM SEPARATOR
-        MENUITEM "アプリケーションの終了(&X)",             ID_FILE_EXIT
+        MENUITEM "終了(&X)",                      ID_FILE_EXIT
     END
     POPUP "表示(&V)"
     BEGIN
