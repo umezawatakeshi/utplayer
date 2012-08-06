@@ -144,6 +144,9 @@ END
 STRINGTABLE 
 BEGIN
     IDS_APP_TITLE           "utplayer"
+    IDS_FAILED_TO_BUILD_GRAPH 
+                            "DirectShow グラフの構築に失敗しました。\n\nエラーコード: %1!08x!\n%2!s!"
+    IDS_FAILED_TO_CONNECT_TO_VIDEO_RENDERER "ビデオレンダラの入力ピンに接続されませんでした。"
     IDC_UTPLAYER            "UTPLAYER"
 END
 
@@ -209,6 +212,22 @@ BEGIN
     BEGIN
         MENUITEM "&About...",                   ID_HELP_ABOUT
     END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_APP_TITLE           "utplayer"
+    IDS_FAILED_TO_BUILD_GRAPH 
+                            "Failed to build DirectShow graph.\n\nError code: %1!08x!\n%2!s!"
+    IDS_FAILED_TO_CONNECT_TO_VIDEO_RENDERER 
+                            "Failed to connect to input pin of video renderer."
+    IDC_UTPLAYER            "UTPLAYER"
 END
 
 #endif    // 英語 (米国) resources

@@ -5,6 +5,7 @@
 #include "utplayer.h"
 #include "FrameWindow.h"
 #include "VideoRenderer.h"
+#include "Util.h"
 
 CUtPlayerFrameWindow::CUtPlayerFrameWindow(void)
 {
@@ -303,8 +304,13 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 	hr = pGraphBuilder->RenderFile(wszFile, NULL);
 	if (!SUCCEEDED(hr))
 	{
+		LPTSTR pszError;
 		pGraphBuilder->Release();
 		pVideoRenderer->Release();
+		pszError = FormatErrorAllocateBuffer(hr);
+		::MessageBox(m_hWnd, hInstance, IDS_FAILED_TO_BUILD_GRAPH, MB_ICONERROR,
+			hr, pszError ? pszError : "");
+		LocalFree(pszError);
 		return hr;
 	}
 
@@ -312,6 +318,7 @@ HRESULT CUtPlayerFrameWindow::OpenMediaFile(LPCSTR pszFile)
 	{
 		pGraphBuilder->Release();
 		pVideoRenderer->Release();
+		::MessageBox(m_hWnd, hInstance, IDS_FAILED_TO_CONNECT_TO_VIDEO_RENDERER, MB_ICONERROR);
 		return E_FAIL;
 	}
 

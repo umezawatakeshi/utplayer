@@ -8,11 +8,15 @@
 #include "utplayer.h"
 #include "FrameWindow.h"
 
+HINSTANCE hInstance;
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	CUtPlayerFrameWindow frame;
 	MSG msg;
 	HACCEL hAccel;
+
+	::hInstance = hInstance;
 
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
