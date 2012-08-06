@@ -207,6 +207,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Util.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\utplayer.cpp"
 				>
 			</File>
@@ -230,6 +234,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Util.h"
 				>
 			</File>
 			<File
